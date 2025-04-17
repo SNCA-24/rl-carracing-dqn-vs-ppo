@@ -1,5 +1,5 @@
 
- # CarRacing-RL
+ # RL Based Car Navigation : DQN vs PPO Comparision
  
  A collection of Deep Reinforcement Learning agents for the OpenAI Gymnasium `CarRacing-v2` environment, including DQN variants (Vanilla DQN, Double DQN, Dueling DQN, PER DQN) and PPO (via Stable-Baselines3).
  
