@@ -1,0 +1,84 @@
+# config.yaml
+
+# ── Environment ────────────────────────────────────────────────────────────────
+env:
+  name: CarRacing-v2
+  render_mode: null       # none during training, 'rgb_array' for recording
+  width: 84               # preprocessed frame width
+  height: 84              # preprocessed frame height
+  frame_stack: 4          # number of frames in state
+  
+  # Discretized action definitions (for CarRacingEnv)
+  action_space:
+    - [0.0, 0.0, 0.0]     # No action
+    - [-1.0, 0.0, 0.0]    # Left
+    - [1.0, 0.0, 0.0]     # Right
+    - [0.0, 1.0, 0.0]     # Accelerate
+    - [0.0, 0.0, 0.8]     # Brake
+
+# ── Global Training / Evaluation ──────────────────────────────────────────────
+# actual training 
+training:
+  seeds: [0, 1, 2]        # random seeds to run
+  num_episodes: 100       # episodes per DQN alg
+  max_steps: 1000         # steps per episode
+  save_freq: 20           # checkpoint every N episodes
+  replay_frequency: 4     # train update every N steps
+  ppo_timesteps: 100000
+
+evaluation:
+  eval_episodes: 5        # per-algo evaluation
+  eval_max_steps: 200     # cap steps in each eval
+  video_max_steps: 100    # steps to record in video
+
+# for smoke tests
+# training:
+#   num_episodes: 1
+#   max_steps:     10
+#   save_freq:     1
+#   replay_frequency: 1
+#   ppo_timesteps: 500
+
+# evaluation:
+#   eval_episodes: 1
+#   eval_max_steps: 10
+#   video_max_steps: 10
+
+# ── DQN‑Family Hyperparameters ────────────────────────────────────────────────
+# DQN (and its variants) hyperparameters
+dqn:
+  learning_rate: 0.0001
+  gamma: 0.99
+  batch_size: 64
+  memory_size: 30000
+  train_start: 1000
+  update_target_frequency: 1000
+  epsilon_start: 1.0
+  epsilon_min: 0.1
+  epsilon_decay: 0.9995
+
+# PER‑DQN specific parameters
+per_dqn:
+  alpha: 0.6
+  beta: 0.4
+  beta_increment: 0.001
+  epsilon_per: 0.01   # small constant added to td-errors
+
+# ── PPO Hyperparameters (SB3) ────────────────────────────────────────────────
+ppo:
+  learning_rate: 0.00025
+  gamma: 0.99
+  n_steps: 2048
+  batch_size: 64
+  n_epochs: 10
+  clip_range: 0.2
+  ent_coef: 0.0
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  tensorboard_log: "ppo_tensorboard/"
+
+# ── Compute logging ────────────────────────────────────────────────
+logging:
+  level: INFO
+  train_log: "training.log"
+  experiment_log: "experiment.log"

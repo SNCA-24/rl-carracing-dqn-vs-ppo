@@ -1,0 +1,8 @@
+gymnasium[box2d]==0.29.1
+tensorflow==2.15.0
+stable-baselines3[extra]==2.3.0
+opencv-python
+numpy 
+pandas 
+matplotlib
+pyyaml
