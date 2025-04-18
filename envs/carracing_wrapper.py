@@ -24,7 +24,8 @@ class CarRacingEnv(gym.Wrapper):
         super().__init__(env)
 
         # Load discrete action mappings from config file
-        with open('config.yaml', 'r') as f:
+        config_path = os.environ.get('RL_CONFIG_PATH', 'config.yaml')
+        with open(config_path, 'r') as f:
             cfg = yaml.safe_load(f)
         raw_actions = cfg['env']['action_space']
         self.actions = {i: np.array(a, dtype=np.float32) for i, a in enumerate(raw_actions)}
