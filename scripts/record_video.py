@@ -8,6 +8,7 @@ import yaml
 import argparse
 from datetime import datetime
 import numpy as np
+import moviepy
 from gymnasium.error import DependencyNotInstalled
 
 from envs.carracing_wrapper import CarRacingEnv
