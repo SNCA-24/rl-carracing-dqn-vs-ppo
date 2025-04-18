@@ -17,7 +17,8 @@ setup(
     description="Deep RL agents (DQN variants + PPO) for OpenAI Gym CarRacing-v2",
     packages=find_packages(exclude=["tests*"]),
     install_requires=[
-        "gymnasium[box2d]==0.29.1",
+        # "gymnasium[box2d]==0.29.1",
+        "gymnasium==0.29.1"
         "tensorflow==2.15.0",
         "stable-baselines3[extra]==2.3.0",
         "opencv-python",
