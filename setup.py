@@ -18,7 +18,7 @@ setup(
     packages=find_packages(exclude=["tests*"]),
     install_requires=[
         # "gymnasium[box2d]==0.29.1",
-        "gymnasium==0.29.1"
+        "gymnasium==0.29.1"             
         "tensorflow==2.15.0",
         "stable-baselines3[extra]==2.3.0",
         "opencv-python",
@@ -44,3 +44,10 @@ setup(
     ],
     zip_safe=False,
 )
+
+#changed for kaggle
+# Create pyproject.toml file
+with open(os.path.join(here, 'pyproject.toml'), 'w', encoding='utf-8') as f:
+    f.write('[build-system]\n')
+    f.write('requires = ["setuptools>=42", "wheel"]\n')
+    f.write('build-backend = "setuptools.build_meta"\n')
