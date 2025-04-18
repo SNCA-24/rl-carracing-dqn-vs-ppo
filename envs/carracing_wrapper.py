@@ -1,6 +1,7 @@
 import gymnasium as gym
 import numpy as np
 import yaml
+import os
 from gymnasium.spaces import Discrete, Box
 
 class CarRacingEnv(gym.Wrapper):
