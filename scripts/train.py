@@ -106,8 +106,14 @@ def main():
     parser.add_argument('--ppo_timesteps',    type=int, help='Override training.ppo_timesteps')
     args = parser.parse_args()
 
-    # Load config
-    with open('config.yaml','r') as f:
+    # # Load config
+    # with open('config.yaml','r') as f:
+    #     config = yaml.safe_load(f)
+    # Load config (allow override via RL_CONFIG_PATH)
+    config_path = os.environ.get("RL_CONFIG_PATH", "config.yaml")
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Config file not found at {config_path}")
+    with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
     # Apply any CLI overrides
     train_cfg = config.get('training', {})
