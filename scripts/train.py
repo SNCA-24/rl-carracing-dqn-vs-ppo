@@ -24,6 +24,7 @@ from algos.per_dqn import PERDQNAgent
 from algos.ppo_loader import PPOAgentWrapper
 # Import training helper
 from scripts.utils import create_state_stack, save_training_progress
+# Argument names mirror config.yaml keys for easy override
 
 # Set up logger
 logging.basicConfig(level=logging.INFO,
@@ -98,11 +99,24 @@ def main():
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--model_dir', type=str, default='models')
     parser.add_argument('--log_dir', type=str, default='logs')
+    parser.add_argument('--num_episodes',     type=int, help='Override training.num_episodes')
+    parser.add_argument('--max_steps',        type=int, help='Override training.max_steps')
+    parser.add_argument('--save_freq',        type=int, help='Override training.save_freq')
+    parser.add_argument('--replay_frequency', type=int, help='Override training.replay_frequency')
+    parser.add_argument('--ppo_timesteps',    type=int, help='Override training.ppo_timesteps')
     args = parser.parse_args()
 
     # Load config
     with open('config.yaml','r') as f:
         config = yaml.safe_load(f)
+    # Apply any CLI overrides
+    train_cfg = config.get('training', {})
+    if args.num_episodes is not None:     train_cfg['num_episodes']     = args.num_episodes
+    if args.max_steps is not None:        train_cfg['max_steps']        = args.max_steps
+    if args.save_freq is not None:        train_cfg['save_freq']        = args.save_freq
+    if args.replay_frequency is not None: train_cfg['replay_frequency'] = args.replay_frequency
+    if args.ppo_timesteps is not None:    train_cfg['ppo_timesteps']    = args.ppo_timesteps
+    config['training'] = train_cfg
 
     # Set random seeds
     random.seed(args.seed)
