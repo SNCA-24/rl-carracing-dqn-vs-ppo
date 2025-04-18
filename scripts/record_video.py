@@ -89,7 +89,7 @@ def main():
 
     # Load config
     cfg_path = os.environ.get("RL_CONFIG_PATH", "config.yaml")
-    with open('config.yaml','r') as f:
+    with open('cfg_path','r') as f:
         config = yaml.safe_load(f)
     # Apply any CLI override for video length
     if args.video_max_steps is not None:
