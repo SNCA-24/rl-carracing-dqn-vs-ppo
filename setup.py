@@ -27,19 +27,28 @@ setup(
     #     "matplotlib",
     #     "pyyaml",
     # ],
-    install_requires = [
-    "gymnasium==0.29.0",          # match Kaggle pre‑install
-    "tensorflow>=2.15,<3.0",      # reuse Kaggle tf‑2.18
-    "stable-baselines3>=2.1,<3.0",# no [extra] -> no Atari deps
-    # optional: if something still needs shimmy directly
-    "shimmy>=1.3.0",              # matches Kaggle
-    "opencv-python",
-    "numpy",
-    "pandas",
-    "matplotlib",
-    "pyyaml",
-    "moviepy"
+    install_requires=[
+        # Core dependencies (no GPU/CUDA wheels by default)
+        "gymnasium==0.29.0",
+        "tensorflow>=2.15,<3.0",
+        "opencv-python",
+        "numpy",
+        "pandas",
+        "matplotlib",
+        "pyyaml",
     ],
+    extras_require={
+        # For DQN‑family + basic env
+        # fall back to `pip install car_racing_rl[sb3]` to get Stable‑Baselines3
+        "sb3": [
+            "stable-baselines3[extra]>=2.1,<3.0",
+            "shimmy>=1.3.0",
+        ],
+        # For video recording
+        "video": [
+            "moviepy",
+        ],
+    },
     python_requires=">=3.8",
     entry_points={
         "console_scripts": [
