@@ -130,7 +130,7 @@ def main():
 
     # Load config
     cfg_path = os.environ.get("RL_CONFIG_PATH", "config.yaml")
-    with open('cfg_path','r') as f:
+    with open(cfg_path,'r') as f:
         config = yaml.safe_load(f)
     # Apply any CLI evaluation overrides
     eval_cfg = config.get('evaluation', {})
