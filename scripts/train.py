@@ -78,14 +78,14 @@ def train_agent(agent, agent_name, env, state_shape, config, model_dir, log_dir)
 
         # Checkpoint
         if (ep+1) % save_freq == 0 or (ep+1)==episodes:
-            ckpt = os.path.join(model_dir, f"{agent_name}_ep{ep+1}.h5")
+            ckpt = os.path.join(model_dir, f"{agent_name}_ep{ep+1}.weights.h5")
             agent.save_model(ckpt)
             logger.info(f"Saved model: {ckpt}")
             save_training_progress(rewards, lengths, epsilons,
                                    os.path.join(log_dir, f"{agent_name}_ep{ep+1}"))
 
     # Final save
-    final_path = os.path.join(model_dir, f"{agent_name}_final.h5")
+    final_path = os.path.join(model_dir, f"{agent_name}_final.weights.h5")
     agent.save_model(final_path)
     logger.info(f"Final model saved: {final_path}")
     return {'rewards': rewards, 'lengths': lengths, 'epsilons': epsilons}
