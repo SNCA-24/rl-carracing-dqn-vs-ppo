@@ -88,6 +88,7 @@ def main():
     args = parser.parse_args()
 
     # Load config
+    cfg_path = os.environ.get("RL_CONFIG_PATH", "config.yaml")
     with open('config.yaml','r') as f:
         config = yaml.safe_load(f)
     # Apply any CLI override for video length
