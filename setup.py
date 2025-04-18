@@ -45,9 +45,3 @@ setup(
     zip_safe=False,
 )
 
-#changed for kaggle
-# Create pyproject.toml file
-with open(os.path.join(here, 'pyproject.toml'), 'w', encoding='utf-8') as f:
-    f.write('[build-system]\n')
-    f.write('requires = ["setuptools>=42", "wheel"]\n')
-    f.write('build-backend = "setuptools.build_meta"\n')
