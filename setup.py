@@ -27,12 +27,12 @@ setup(
     #     "matplotlib",
     #     "pyyaml",
     # ],
-    install_requires=[
-    "gymnasium==0.29.1",                # keep
-    # Use *at least* TF 2.15 but accept newer (Kaggle has 2.18)
-    "tensorflow>=2.15,<3.0",
-    # Use any stable‑baselines3 ≥2.1 (Kaggle has 2.1.0)
-    "stable-baselines3[extra]>=2.1,<3.0",
+    install_requires = [
+    "gymnasium==0.29.0",          # match Kaggle pre‑install
+    "tensorflow>=2.15,<3.0",      # reuse Kaggle tf‑2.18
+    "stable-baselines3>=2.1,<3.0",# no [extra] -> no Atari deps
+    # optional: if something still needs shimmy directly
+    "shimmy>=1.3.0",              # matches Kaggle
     "opencv-python",
     "numpy",
     "pandas",
