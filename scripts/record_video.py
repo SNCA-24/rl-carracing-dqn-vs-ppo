@@ -9,6 +9,7 @@ import argparse
 from datetime import datetime
 import numpy as np
 import moviepy
+import logging
 from gymnasium.error import DependencyNotInstalled
 
 from envs.carracing_wrapper import CarRacingEnv
@@ -19,6 +20,7 @@ from algos.per_dqn import PERDQNAgent
 from algos.ppo_loader import PPOAgentWrapper
 from scripts.utils import create_state_stack
 
+logger = logging.getLogger(__name__)
 
 def record_video(agent, agent_name, model_path, config, video_base_dir):
     # Load env config
@@ -41,11 +43,12 @@ def record_video(agent, agent_name, model_path, config, video_base_dir):
             episode_trigger=lambda ep: True,
             name_prefix=agent_name.lower()
         )
+    except (DependencyNotInstalled, ModuleNotFoundError) as e:
+        logger.warning(f"Video recording unavailable: {e}. Proceeding without saving video.")
+        wrapped_env = CarRacingEnv(render_mode='rgb_array')
+    else:
         wrapped_env = CarRacingEnv(render_mode='rgb_array')
         wrapped_env.env = video_env
-    except (DependencyNotInstalled, ModuleNotFoundError, ImportError):
-        print("moviepy not installed; skipping video recording. Running episode without saving video.")
-        wrapped_env = CarRacingEnv(render_mode='rgb_array')
 
     # Load the trained model
     if isinstance(agent, PPOAgentWrapper):
