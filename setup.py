@@ -16,16 +16,29 @@ setup(
     license="MIT",
     description="Deep RL agents (DQN variants + PPO) for OpenAI Gym CarRacing-v2",
     packages=find_packages(exclude=["tests*"]),
+    # install_requires=[
+    #     # "gymnasium[box2d]==0.29.1",
+    #     "gymnasium==0.29.1"             
+    #     "tensorflow==2.15.0",
+    #     "stable-baselines3[extra]==2.3.0",
+    #     "opencv-python",
+    #     "numpy",
+    #     "pandas",
+    #     "matplotlib",
+    #     "pyyaml",
+    # ],
     install_requires=[
-        # "gymnasium[box2d]==0.29.1",
-        "gymnasium==0.29.1"             
-        "tensorflow==2.15.0",
-        "stable-baselines3[extra]==2.3.0",
-        "opencv-python",
-        "numpy",
-        "pandas",
-        "matplotlib",
-        "pyyaml",
+    "gymnasium==0.29.1",                # keep
+    # Use *at least* TF 2.15 but accept newer (Kaggle has 2.18)
+    "tensorflow>=2.15,<3.0",
+    # Use any stable‑baselines3 ≥2.1 (Kaggle has 2.1.0)
+    "stable-baselines3[extra]>=2.1,<3.0",
+    "opencv-python",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "pyyaml",
+    "moviepy"
     ],
     python_requires=">=3.8",
     entry_points={
