@@ -124,11 +124,20 @@ def main():
                         choices=['DQN','DoubleDQN','DuelingDQN','PERDQN','PPO'])
     parser.add_argument('--model_path', type=str, required=True,
                         help='Path to saved model weights or PPO zip')
+    parser.add_argument('--eval_episodes',    type=int, help='Override evaluation.eval_episodes')
+    parser.add_argument('--eval_max_steps',   type=int, help='Override evaluation.eval_max_steps')
     args = parser.parse_args()
 
     # Load config
     with open('config.yaml','r') as f:
         config = yaml.safe_load(f)
+    # Apply any CLI evaluation overrides
+    eval_cfg = config.get('evaluation', {})
+    if args.eval_episodes is not None:
+        eval_cfg['eval_episodes'] = args.eval_episodes
+    if args.eval_max_steps is not None:
+        eval_cfg['eval_max_steps'] = args.eval_max_steps
+    config['evaluation'] = eval_cfg
 
     # Create env
     env_cfg = config['env']
