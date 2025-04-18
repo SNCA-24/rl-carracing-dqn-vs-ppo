@@ -84,11 +84,15 @@ def main():
     parser.add_argument('--algo', required=True, choices=['DQN','DoubleDQN','DuelingDQN','PERDQN','PPO'])
     parser.add_argument('--model_path', required=True, help='Path to model weights or PPO zip')
     parser.add_argument('--video_dir', default='videos', help='Base directory for recordings')
+    parser.add_argument('--video_max_steps', type=int, help='Override evaluation.video_max_steps')
     args = parser.parse_args()
 
     # Load config
     with open('config.yaml','r') as f:
         config = yaml.safe_load(f)
+    # Apply any CLI override for video length
+    if args.video_max_steps is not None:
+        config.setdefault('evaluation', {})['video_max_steps'] = args.video_max_steps
 
     # Instantiate agent
     if args.algo in ['DQN','DoubleDQN','DuelingDQN']:
@@ -112,7 +116,12 @@ def main():
         agent = PPOAgentWrapper(config['ppo'], model_dir=None)
 
     # Record
-    record_video(agent, args.algo, args.model_path, config, args.video_dir)
+    try:
+        record_video(agent, args.algo, args.model_path, config, args.video_dir)
+    except Exception as e:
+        print(f"Error during video recording: {e}")
+        import sys
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
