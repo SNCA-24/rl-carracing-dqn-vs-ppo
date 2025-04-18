@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10, 3.11]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt','setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -e .       # installs your package and all extras from setup.py
+          pip install pytest pytest-cov
+
+      - name: Smoke‐train DQN (1×10)
+        run: |
+          python -m scripts.train --algo DQN --seed 0 --model_dir tmp_models --log_dir tmp_logs --num_episodes 1 --max_steps 10 --save_freq 1
+        # If it errors, the job fails automatically
+
+      - name: Smoke‐eval DQN
+        run: |
+          # find the single checkpoint just saved
+          ckpt=$(ls tmp_models/*/DQN_ep1.weights.h5)
+          python -m scripts.evaluate --algo DQN --model_path "$ckpt" --episodes 1 --max_eval_steps 10
+
+      - name: Run unit tests
+        run: |
+          pytest --maxfail=1 --disable-warnings -q --cov=.
+
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 algos envs scripts
+
+      - name: Check formatting with black
+        run: |
+          pip install black
+          black --check .
+
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}  # if you use Codecov
